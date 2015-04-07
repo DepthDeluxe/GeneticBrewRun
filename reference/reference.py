@@ -79,7 +79,7 @@ def select(breed):
     selected = []
     numSelected = 0
     for distance in sorted(dDict.keys()):
-        if numSelected >= 20:
+        if numSelected >= 15:
             break
         numSelected += 1
 
