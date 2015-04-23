@@ -8,7 +8,7 @@ module InitPop(
   output done
 );
 
-output reg [7500:0] next_population;
+reg [7500:0] next_population;
 
 reg [1:0] state;
 reg [1:0] next_state;
@@ -33,6 +33,7 @@ assign done = ( state == 3 );
 initial begin
   state = 0;
   counter = 0;
+  population = 0;
 end
 
 // for the population sel
