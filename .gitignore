@@ -59,3 +59,15 @@ target/
 # Verilog stuff
 *.vcd
 a.out
+
+# ISE Shit
+*.sdb
+*.exe
+*.wdb
+*.ini
+*.xmsgs
+isim/
+isim.cmd
+*.html
+
+*
