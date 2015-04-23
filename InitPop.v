@@ -4,11 +4,11 @@ module InitPop(
   input clk,
   input start,
   input [31:0] prg_seed,
-  output reg [7500:0] population,
+  output reg [7499:0] population,
   output done
 );
 
-reg [7500:0] next_population;
+reg [7499:0] next_population;
 
 reg [1:0] state;
 reg [1:0] next_state;

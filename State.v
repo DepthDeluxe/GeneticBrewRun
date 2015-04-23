@@ -1,11 +1,11 @@
 module State (
   input clk,
-  input [7500:0] in_pop,
-  input [7500:0] mut_pop,
+  input [7499:0] in_pop,
+  input [7499:0] mut_pop,
   input in_done,
   input sel_done,
   input mut_done,
-  output [7500:0] population,
+  output [7499:0] population,
   output in_start,
   output sel_start,
   output mut_start

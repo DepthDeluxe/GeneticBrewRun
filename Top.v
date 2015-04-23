@@ -29,11 +29,21 @@ module Top(
 reg [31:0] counter;
 reg [31:0] next_counter;
 
-// sub lines
+// start lines
 wire sel_start;
 wire mut_start;
+wire init_pop_start;
+
+// done lines
+wire init_pop_done;
 wire sel_done; assign sel_done = 0;
-wire mut_done; assign mut_done = 0;
+wire mut_done;
+
+// population lines
+wire [7499:0] init_population;			// population output from InitPop
+wire [7499:0] population;					// population at each state
+wire [1499:0] sel_population; assign sel_population = population[1499:0];				// population that is selected
+wire [7499:0] mut_population;				// population to be mutated
 
 wire button_p;
 Pulser button_pulser_module(
@@ -41,10 +51,8 @@ Pulser button_pulser_module(
 	.in(button),
 	.out(button_p)
 );
-	
-wire init_pop_start;
-wire [7500:0] init_population;
-wire init_pop_done;
+
+// Population initializer, runs once
 InitPop init_pop_module(
   .clk(clk),
   .start(init_pop_start),
@@ -53,8 +61,20 @@ InitPop init_pop_module(
   .done(init_pop_done)
 );
 
-wire [7500:0] mut_population;
-wire [7500:0] population;
+// Selection module, first thing to run at each iteration
+// DADAA
+
+// Mutation module, runs after selection module
+mutation mutation_module(
+    .clk(clk),
+	 .start(mut_start),
+	 .sel_population(sel_population), //selection is 20%, 10 paths at 150 bits apiece
+    .prg_seed(counter),
+    .mutant_pop(mut_population), // 50 paths at 150 bits apiece
+	 .done(mut_donee)
+);
+
+// State module, holds the state and controls flow of the system
 State state_module(
   .clk(clk),
   .in_pop(init_population),
