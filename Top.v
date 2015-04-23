@@ -46,7 +46,7 @@ wire [1499:0] sel_population; assign sel_population = population[1499:0];				// 
 wire [7499:0] mut_population;				// population to be mutated
 
 wire button_p;
-Pulser button_pulser_module(
+PulserModule button_pulser_module(
 	.clk(clk),
 	.in(button),
 	.out(button_p)
@@ -87,6 +87,21 @@ State state_module(
   .sel_start(sel_start),
   .mut_start(mut_start)
 );
+
+wire [0:7] uart_data_to_send;
+wire uart_transmit; assign uart_transmit = 0;
+wire uart_in;
+wire uart_out;
+wire [7:0] uart_data; assign uart_data = 0;
+UARTModule uart_module(
+	 .clk(clk),
+	 .data_to_send(uart_data_to_send),
+    .transmit(transmit),
+	 .in(uart_in),
+	 .out(uart_out),
+	 .LED_magic(uart_data)
+);
+
 
 initial begin
 	counter = 0;
