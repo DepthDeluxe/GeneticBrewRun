@@ -42,10 +42,7 @@ module swap(
 //mutant = parent;
 //end
 
-wire [4:0] split_parent [29:0]; assign split_parent = parent;
-reg [4:0] next_split_parent[29:0];
-
-wire [149:0] next_mutant; assign next_mutant = next_split_parent;
+reg [149:0] next_mutant;
 
 wire [4:0] aug0;
 wire [4:0] aug1;
@@ -66,8 +63,7 @@ assign random_state = prg_seed[11:10];
 //assign debug_change = parent ^ mutant;
 
 initial begin
-	//mutant = 150'b0;
-	split_parent = 0;
+	mutant = 150'b0;
 
 	state = 0;	
 	done = 0;
@@ -96,10 +92,17 @@ begin
 				next_mutant = parent;		//set next_mutant
 			
 				//set swapped indicies
-				//next_mutant[5*aug0 -: 5] = parent[5*aug1 -: 5];
-				//next_mutant[5*aug1 -: 5] = parent[5*aug0 -: 5];
-				next_split_parent[aug0] = split_parent[aug1];
-				next_split_parent[aug1] = split_parent[aug0];
+				next_mutant[5*aug0] = parent[5*aug1];
+				next_mutant[5*aug0 + 1] = parent[5*aug1 + 1];
+				next_mutant[5*aug0 + 2] = parent[5*aug1 + 2];
+				next_mutant[5*aug0 + 3] = parent[5*aug1 + 3];
+				next_mutant[5*aug0 + 4] = parent[5*aug1 + 4];
+				
+				next_mutant[5*aug1] = parent[5*aug0];
+				next_mutant[5*aug1 + 1] = parent[5*aug0 + 1];
+				next_mutant[5*aug1 + 2] = parent[5*aug0 + 2];
+				next_mutant[5*aug1 + 3] = parent[5*aug0 + 3];
+				next_mutant[5*aug1 + 4] = parent[5*aug0 + 4];
 				
 				next_done = 0;		//not done
 				next_state = 2;	//move to next state
@@ -110,10 +113,17 @@ begin
 				next_mutant = parent;		//set next_mutant
 			
 				//set swapped indicies
-				//next_mutant[5*aug0 -: 5] = parent[5*aug1 -: 5];
-				//next_mutant[5*aug1 -: 5] = parent[5*aug0 -: 5];
-				next_split_parent[aug0] = split_parent[aug1];
-				next_split_parent[aug1] = split_parent[aug0];
+				next_mutant[5*aug0] = parent[5*aug1];
+				next_mutant[5*aug0 + 1] = parent[5*aug1 + 1];
+				next_mutant[5*aug0 + 2] = parent[5*aug1 + 2];
+				next_mutant[5*aug0 + 3] = parent[5*aug1 + 3];
+				next_mutant[5*aug0 + 4] = parent[5*aug1 + 4];
+				
+				next_mutant[5*aug1] = parent[5*aug0];
+				next_mutant[5*aug1 + 1] = parent[5*aug0 + 1];
+				next_mutant[5*aug1 + 2] = parent[5*aug0 + 2];
+				next_mutant[5*aug1 + 3] = parent[5*aug0 + 3];
+				next_mutant[5*aug1 + 4] = parent[5*aug0 + 4];
 				
 				next_done = 0;		//not done
 				next_state = 3;	//move to next state
@@ -122,12 +132,19 @@ begin
 		3:		//third potential swap
 			begin
 				next_mutant = parent;		//set next_mutant
-			
+				
 				//set swapped indicies
-				//next_mutant[5*aug0 -: 5] = parent[5*aug1 -: 5];
-				//next_mutant[5*aug1 -: 5] = parent[5*aug0 -: 5];
-				next_split_parent[aug0] = split_parent[aug1];
-				next_split_parent[aug1] = split_parent[aug0];
+				next_mutant[5*aug0] = parent[5*aug1];
+				next_mutant[5*aug0 + 1] = parent[5*aug1 + 1];
+				next_mutant[5*aug0 + 2] = parent[5*aug1 + 2];
+				next_mutant[5*aug0 + 3] = parent[5*aug1 + 3];
+				next_mutant[5*aug0 + 4] = parent[5*aug1 + 4];
+				
+				next_mutant[5*aug1] = parent[5*aug0];
+				next_mutant[5*aug1 + 1] = parent[5*aug0 + 1];
+				next_mutant[5*aug1 + 2] = parent[5*aug0 + 2];
+				next_mutant[5*aug1 + 3] = parent[5*aug0 + 3];
+				next_mutant[5*aug1 + 4] = parent[5*aug0 + 4];
 
 				next_done = 1;		//done
 				next_state = 0;
