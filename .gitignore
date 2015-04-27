@@ -83,4 +83,3 @@ iseconfig/
 xst/
 *.ngc
 *.cmd_log
-*.xise
