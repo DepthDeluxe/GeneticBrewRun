@@ -95,6 +95,43 @@
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="21"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="21"/>
     </file>
+    <file xil_pn:name="ipcore_dir/DistanceTable.xco" xil_pn:type="FILE_COREGEN">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="22"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="22"/>
+    </file>
+    <file xil_pn:name="Nick/CompDistance.v" xil_pn:type="FILE_VERILOG">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="29"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="29"/>
+    </file>
+    <file xil_pn:name="Nick/CompDistance_Test.v" xil_pn:type="FILE_VERILOG">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="30"/>
+      <association xil_pn:name="PostMapSimulation" xil_pn:seqID="30"/>
+      <association xil_pn:name="PostRouteSimulation" xil_pn:seqID="30"/>
+      <association xil_pn:name="PostTranslateSimulation" xil_pn:seqID="30"/>
+    </file>
+    <file xil_pn:name="Nick/GetDistance.v" xil_pn:type="FILE_VERILOG">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="31"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="31"/>
+    </file>
+    <file xil_pn:name="Nick/GetDistance_Test.v" xil_pn:type="FILE_VERILOG">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="32"/>
+      <association xil_pn:name="PostMapSimulation" xil_pn:seqID="32"/>
+      <association xil_pn:name="PostRouteSimulation" xil_pn:seqID="32"/>
+      <association xil_pn:name="PostTranslateSimulation" xil_pn:seqID="32"/>
+    </file>
+    <file xil_pn:name="Nick/Selection.v" xil_pn:type="FILE_VERILOG">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="33"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="33"/>
+    </file>
+    <file xil_pn:name="Nick/Selection_Test.v" xil_pn:type="FILE_VERILOG">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="34"/>
+      <association xil_pn:name="PostMapSimulation" xil_pn:seqID="34"/>
+      <association xil_pn:name="PostRouteSimulation" xil_pn:seqID="34"/>
+      <association xil_pn:name="PostTranslateSimulation" xil_pn:seqID="34"/>
+    </file>
+    <file xil_pn:name="ipcore_dir/DistanceTable.xise" xil_pn:type="FILE_COREGENISE">
+      <association xil_pn:name="Implementation" xil_pn:seqID="23"/>
+    </file>
   </files>
 
   <properties>
