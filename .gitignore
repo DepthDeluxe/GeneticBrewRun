@@ -78,8 +78,6 @@ isim.cmd
 *.lso
 *.stx
 *.prj
-*.gise
 iseconfig/
 xst/
-*.ngc
 *.cmd_log
