@@ -36,7 +36,7 @@ wire init_pop_start;
 
 // done lines
 wire init_pop_done;
-wire sel_done; assign sel_done = 0;
+wire sel_done;
 wire mut_done;
 
 // population lines
@@ -62,7 +62,13 @@ InitPop init_pop_module(
 );
 
 // Selection module, first thing to run at each iteration
-// DADAA
+Selection selection_module (
+	.clk(clk),
+	.start(sel_start),
+	.pop(population),
+	.sel_pop(sel_population),
+	.done(sel_done)
+);
 
 // Mutation module, runs after selection module
 mutation mutation_module(
@@ -71,7 +77,7 @@ mutation mutation_module(
 	 .sel_population(sel_population), //selection is 20%, 10 paths at 150 bits apiece
     .prg_seed(counter),
     .mutant_pop(mut_population), // 50 paths at 150 bits apiece
-	 .done(mut_donee)
+	 .done(mut_done)
 );
 
 // State module, holds the state and controls flow of the system
