@@ -23,7 +23,8 @@
 module Top(
 	 input clk,
     input button,
-    output done
+    output [1:0] state_out,
+	 output uart_out
     );
 
 reg [31:0] counter;
@@ -33,6 +34,7 @@ reg [31:0] next_counter;
 wire sel_start;
 wire mut_start;
 wire init_pop_start;
+wire uart_transmit;
 
 // done lines
 wire init_pop_done;
@@ -42,7 +44,7 @@ wire mut_done;
 // population lines
 wire [7499:0] init_population;			// population output from InitPop
 wire [7499:0] population;					// population at each state
-wire [1499:0] sel_population; assign sel_population = population[1499:0];				// population that is selected
+wire [1499:0] sel_population;
 wire [7499:0] mut_population;				// population to be mutated
 
 wire button_p;
@@ -83,6 +85,7 @@ mutation mutation_module(
 // State module, holds the state and controls flow of the system
 State state_module(
   .clk(clk),
+  .start(button_p),
   .in_pop(init_population),
   .mut_pop(mut_population),
   .in_done(init_pop_done),
@@ -91,20 +94,17 @@ State state_module(
   .population(population),
   .in_start(init_pop_start),
   .sel_start(sel_start),
-  .mut_start(mut_start)
+  .mut_start(mut_start),
+  .uart_transmit(uart_transmit),
+  .state_out(state_out)
 );
 
 wire [0:7] uart_data_to_send;
-wire uart_transmit; assign uart_transmit = 0;
-wire uart_in;
-wire uart_out;
 wire [7:0] uart_data; assign uart_data = 0;
 UARTModule uart_module(
 	 .clk(clk),
 	 .data_to_send(uart_data_to_send),
     .transmit(transmit),
-	 .in(uart_in),
-	 .out(uart_out),
 	 .LED_magic(uart_data)
 );
 

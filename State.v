@@ -1,5 +1,6 @@
 module State (
   input clk,
+  input start,
   input [7499:0] in_pop,
   input [7499:0] mut_pop,
   input in_done,
@@ -8,10 +9,12 @@ module State (
   output [7499:0] population,
   output in_start,
   output sel_start,
-  output mut_start
+  output mut_start,
+  output uart_transmit,
+  output [1:0] state_out
 );
 
-reg [1:0] state;
+reg [1:0] state; assign state_out = state;
 reg [1:0] next_state;
 
 reg [15:0] num_generations;
@@ -25,10 +28,12 @@ assign population = (num_generations == 0) ? in_pop : mut_pop;
 assign in_start = ( state == 0 );
 assign sel_start = ( state == 1 );
 assign mut_start = ( state == 2 );
+assign uart_transmit = ( state == 3 );
 
 initial begin
-  state = 0;
+  state = 3;
   num_generations = 0;
+  next_num_generations = 0;
 end
 
 always @ ( * )
@@ -77,7 +82,10 @@ begin
 
     // final state: hold
     3: begin
-      next_state = 3;
+		if ( start )
+			next_state = 0;
+		else
+			next_state = 3;
       next_num_generations = num_generations;
     end
   endcase
