@@ -22,30 +22,45 @@
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-module compDistanceTest;
+module CompDistance_Test;
 
 	// Inputs
+	reg clk;
+	reg start;
 	reg [149:0] in;
 
 	// Outputs
-	wire [12:0] out;
+	wire [11:0] out;
+	wire done;
+	wire [9:0] dout_debug;
 
 	// Instantiate the Unit Under Test (UUT)
-	compDistance uut (
-		.in(in), 
-		.out(out)
+	CompDistance uut (
+		.clk(clk),
+		.start(start),
+		.in(in),
+		.out(out),
+		.done(done),
+		.dout_debug(dout_debug)
 	);
+
+	always #5 clk = ~clk;
 
 	initial begin
 		// Initialize Inputs
 		in = 149'b11;
+		clk = 0;
+		start = 0;
 
 		// Wait 100 ns for global reset to finish
 		#200;
 		
 		in = 149'b000000011000000001100000000110000000011000000001100000000110000000011000000001100000000110000000011000000001100000000110000000011000000001100000000110;
+		start = 1;
+		#10;
+		start = 0;
 		
-		#200;
+		#10000;
         
 		// Add stimulus here
 

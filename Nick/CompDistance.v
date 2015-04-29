@@ -18,43 +18,92 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module compDistance(
+module CompDistance(
+	 input clk,
+	 input start,
     input [149:0] in,
-    output [11:0] out
+	 output done,
+    output reg [11:0] out,
+	 output [9:0] dout_debug
     );
-	
-	wire [9:0] outp [28:0];
-	
-	getDistance dis0 (.value1(in[4: 0]), .value2(in[9: 5]), .dist(outp[0]));
-	getDistance dis1 (.value1(in[9: 5]), .value2(in[14: 10]), .dist(outp[1]));
-	getDistance dis2 (.value1(in[14: 10]), .value2(in[19: 15]), .dist(outp[2]));
-	getDistance dis3 (.value1(in[19: 15]), .value2(in[24: 20]), .dist(outp[3]));
-	getDistance dis4 (.value1(in[24: 20]), .value2(in[29: 25]), .dist(outp[4]));
-	getDistance dis5 (.value1(in[29: 25]), .value2(in[34: 30]), .dist(outp[5]));
-	getDistance dis6 (.value1(in[34: 30]), .value2(in[39: 35]), .dist(outp[6]));
-	getDistance dis7 (.value1(in[39: 35]), .value2(in[44: 40]), .dist(outp[7]));
-	getDistance dis8 (.value1(in[44: 40]), .value2(in[49: 45]), .dist(outp[8]));
-	getDistance dis9 (.value1(in[49: 45]), .value2(in[54: 50]), .dist(outp[9]));
-	getDistance dis10 (.value1(in[54: 50]), .value2(in[59: 55]), .dist(outp[10]));
-	getDistance dis11 (.value1(in[59: 55]), .value2(in[64: 60]), .dist(outp[11]));
-	getDistance dis12 (.value1(in[64: 60]), .value2(in[69: 65]), .dist(outp[12]));
-	getDistance dis13 (.value1(in[69: 65]), .value2(in[74: 70]), .dist(outp[13]));
-	getDistance dis14 (.value1(in[74: 70]), .value2(in[79: 75]), .dist(outp[14]));
-	getDistance dis15 (.value1(in[79: 75]), .value2(in[84: 80]), .dist(outp[15]));
-	getDistance dis16 (.value1(in[84: 80]), .value2(in[89: 85]), .dist(outp[16]));
-	getDistance dis17 (.value1(in[89: 85]), .value2(in[94: 90]), .dist(outp[17]));
-	getDistance dis18 (.value1(in[94: 90]), .value2(in[99: 95]), .dist(outp[18]));
-	getDistance dis19 (.value1(in[99: 95]), .value2(in[104: 100]), .dist(outp[19]));
-	getDistance dis20 (.value1(in[104: 100]), .value2(in[109: 105]), .dist(outp[20]));
-	getDistance dis21 (.value1(in[109: 105]), .value2(in[114: 110]), .dist(outp[21]));
-	getDistance dis22 (.value1(in[114: 110]), .value2(in[119: 115]), .dist(outp[22]));
-	getDistance dis23 (.value1(in[119: 115]), .value2(in[124: 120]), .dist(outp[23]));
-	getDistance dis24 (.value1(in[124: 120]), .value2(in[129: 125]), .dist(outp[24]));
-	getDistance dis25 (.value1(in[129: 125]), .value2(in[134: 130]), .dist(outp[25]));
-	getDistance dis26 (.value1(in[134: 130]), .value2(in[139: 135]), .dist(outp[26]));
-	getDistance dis27 (.value1(in[139: 135]), .value2(in[144: 140]), .dist(outp[27]));
-	getDistance dis28 (.value1(in[144: 140]), .value2(in[149: 145]), .dist(outp[28]));
-
-	assign out = outp[0] + outp[1] + outp[2] + outp[3] + outp[4] + outp[5] + outp[6] + outp[7] + outp[8] + outp[9] + outp[10] + outp[11] + outp[12] + outp[13] + outp[14] + outp[15] + outp[16] + outp[17] + outp[18] + outp[19] + outp[20] + outp[21] + outp[22] + outp[23] + outp[24] + outp[25] + outp[26] + outp[27] + outp[28];
-
+	 
+	 assign dout_debug = dout;
+	 
+	 // declare the RAM table
+	 wire [9:0] addr;
+	 wire [8:0] dout;
+	 DistanceTable dt_mod (
+		clk,
+		addr,
+		dout
+	 );
+	 
+	 // holds the state and currently active module
+	 reg [1:0] state; reg [1:0] next_state;
+	 reg [3:0] counter; reg [3:0] next_counter;
+	 assign done = (state == 2);
+	 
+	 // A and B are adjacent places in the in array
+	 wire [4:0] A; assign A = in[counter];
+	 wire [4:0] B; assign B = in[counter + 1];
+	 assign addr = (A < B) ? (A << 5 | B) : (B << 5 | A);
+	 
+	 reg [11:0] next_out;
+	 
+	 initial begin
+		state = 3;
+		next_state = 3;
+		counter = 0;
+		next_counter = 0;
+		out = 0;
+		next_out = 0;
+	 end
+	 
+	 always @ ( * )
+	 begin
+		// state 0: wait for ROM
+		// state 1: increment counter
+		// state 2: done
+		// state 3: hold
+		case ( state )
+		0: begin
+			next_state = 1;
+			next_counter = counter;
+			next_out = out;
+			end
+		1: begin
+			// if we aren't done, then move back to first state
+			if ( counter > 13 )
+				next_state = 2;
+			else
+				next_state = 0;
+			
+			// increment counter, add the output of the ROM module
+			next_counter = counter + 1;
+			next_out = out + dout;
+			end
+		2: begin
+			next_state = 3;
+			next_counter = 0;
+			next_out = out;
+			end
+		3: begin
+			if ( start )
+				next_state = 0;
+			else
+				next_state = 3;
+			
+			next_counter = 0;
+			next_out = 0;
+			end
+		endcase
+	 end
+	 
+	 always @ ( posedge clk )
+	 begin
+		state <= next_state;
+		counter <= next_counter;
+		out <= next_out;
+	 end
+	 
 endmodule
