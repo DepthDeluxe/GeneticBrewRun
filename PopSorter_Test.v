@@ -37,15 +37,18 @@ module PopSorter_Test;
 		.clk(clk), 
 		.start(start),
 		.sorted(sorted),
+		.done(done),
 		.in(in)
 	);
+
+	always #5 clk = ~clk;
 
 	initial begin
 		// Initialize Inputs
 		clk = 0;
 		start = 0;
 		
-		in = -1356136;
+		in = -135945636;
 
 		// Wait 100 ns for global reset to finish
 		#100;
@@ -53,7 +56,7 @@ module PopSorter_Test;
 		start = 1;
 		#10;
 		start = 0;
-		#10000;
+		#100000;
 
 	end
       
