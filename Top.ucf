@@ -1,5 +1,4 @@
 NET "clk" LOC=B8;
 NET "button" LOC=H13;
-NET "state_out<0>" LOC=F4;
-NET "state_out<1>" LOC=R4;
+NET "light" LOC=R4;
 NET "uart_out" LOC=P9;
