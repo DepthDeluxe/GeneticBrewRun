@@ -1,4 +1,7 @@
 `timescale 1ns / 1ps
+
+`include "InitPop.v"
+`include "State.v"
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -21,7 +24,7 @@
 module Top(
 	 input clk,
     input button,
-    output [1:0] state_out,
+    output light,
 	 output uart_out
     );
 
@@ -84,6 +87,7 @@ mutation mutation_module(
 );
 
 // State module, holds the state and controls flow of the system
+wire [1:0] state_out; assign light = (state_out == 0);
 State state_module(
   .clk(clk),
   .start(button_p),
