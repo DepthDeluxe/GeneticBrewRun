@@ -32,7 +32,10 @@ reg [31:0] next_counter;
 wire sel_start;
 wire mut_start;
 wire init_pop_start;
-wire uart_transmit;
+
+// UART stuff (will properly reconnect later)
+//wire uart_transmit;
+assign uart_out = 0;
 
 // done lines
 wire init_pop_done;
@@ -46,7 +49,7 @@ wire [1499:0] sel_population;
 wire [7499:0] mut_population;				// population to be mutated
 
 wire button_p;
-PulserModule button_pulser_module(
+Pulser button_pulser_module(
 	.clk(clk),
 	.in(button),
 	.out(button_p)
@@ -97,6 +100,7 @@ State state_module(
   .state_out(state_out)
 );
 
+/*
 wire [0:7] uart_data_to_send;
 wire [7:0] uart_data; assign uart_data = 0;
 UARTModule uart_module(
@@ -105,6 +109,7 @@ UARTModule uart_module(
     .transmit(transmit),
 	 .LED_magic(uart_data)
 );
+*/
 
 
 initial begin
