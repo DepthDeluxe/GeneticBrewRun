@@ -28,15 +28,15 @@ module Selection(
     );
 	 
 	 /*
-	wire [11:0] distances[49:0];
-	wire cdp_done;
-	CompDistancePop cdp_module(
-    .clk(clk),
-    .start(start),
-    .pop(pop),
-	 .distances(distances),
-	 .done(cdp_done)
-	 );
+	 wire distances[599:0];
+	 wire cdp_done;
+	 CompDistancePop cdp_module(
+     .clk(clk),
+     .start(start),
+     .pop(pop),
+	  .distances(distances),
+	  .done(cdp_done)
+	  );
 	 */
 	 
 	 reg [1:0] state;
