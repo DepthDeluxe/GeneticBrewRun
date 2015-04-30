@@ -25,69 +25,76 @@ reg [15:0] next_num_generations;
 assign population = (num_generations == 0) ? in_pop : mut_pop;
 
 // assign the starts to be corresponding to states
-assign in_start = ( state == 0 );
-assign sel_start = ( state == 1 );
-assign mut_start = ( state == 2 );
-assign uart_transmit = ( state == 3 );
+assign in_start = ( state == 1 );
+assign sel_start = ( state == 2 );
+assign mut_start = ( state == 3 );
+assign uart_transmit = ( state == 0 && num_generations != 0 );
 
 initial begin
-  state = 3;
-  num_generations = 0;
-  next_num_generations = 0;
+  state = 0; next_state = 0;
+  num_generations = 0; next_num_generations = 0;
 end
 
 always @ ( * )
 begin
+	// states
+	// 0: waiting to start, hold
+	// 1: initializing population
+	// 2: selecting population
+	// 3: mutating population
   case ( state )
-    // start the inital population
-    0: begin
-      if ( in_done )
-        next_state = 1;
-      else
-        next_state = 0;
+	 0: begin
+			if ( start )
+			begin
+				next_state = 1;
+				next_num_generations = 0;
+			end
+			else
+			begin
+				next_state = 0;
+				next_num_generations = num_generations;
+			end
+		end
+    
+	 // start the inital population
+    1: begin
+			if ( in_done )
+				next_state = 2;
+			else
+				next_state = 1;
 
-      next_num_generations = 0;
-    end
+			next_num_generations = 0;
+		 end
 
     // selection phase
-    1: begin
-      if ( sel_done )
-        next_state = 2;
-      else
-        next_state = 1;
+    2: begin
+			if ( sel_done )
+				next_state = 3;
+			else
+				next_state = 2;
 
-      next_num_generations = num_generations;
-    end
+			next_num_generations = num_generations;
+		 end
 
     // mutation time!
-    2: begin
-      if ( mut_done )
-        if ( num_generations > 30000 )
-        begin
-          next_state = 3;
-          next_num_generations = num_generations + 1;
-        end
-        else
-        begin
-          next_state = 1;
-          next_num_generations = num_generations;
-        end
-      else
-      begin
-        next_state = 2;
-        next_num_generations = num_generations;
-      end
-
-    end
-
-    // final state: hold
     3: begin
-		if ( start )
-			next_state = 0;
-		else
-			next_state = 3;
-      next_num_generations = num_generations;
-    end
+			if ( mut_done )
+			  if ( num_generations > 10 ) //30000 )
+			  begin
+				 next_state = 0;
+				 next_num_generations = num_generations;
+			  end
+			  else
+			  begin
+				 next_state = 2;
+				 next_num_generations = num_generations + 1;
+			  end
+			else
+			begin
+			  next_state = 3;
+			  next_num_generations = num_generations;
+			end
+		end
   endcase
 end
 
