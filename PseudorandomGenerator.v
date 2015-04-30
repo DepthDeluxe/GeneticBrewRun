@@ -1,4 +1,3 @@
-`include "LFSR.v"
 module PseudorandomGenerator(
   input clk,
   input start,
