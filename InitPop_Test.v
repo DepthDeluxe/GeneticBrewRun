@@ -6,7 +6,7 @@ module InitPopTest;
 reg clk;
 reg start;
 reg [31:0] prg_seed;
-wire [7500:0] population;
+wire [7499:0] population;
 wire done;
 
 InitPop uut(

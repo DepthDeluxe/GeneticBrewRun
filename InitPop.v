@@ -1,3 +1,5 @@
+`include "PseudorandomGenerator.v"
+
 module InitPop(
   input clk,
   input start,
@@ -34,10 +36,6 @@ initial begin
   population = 0;
 end
 
-// for the population sel
-wire pop_sel_lo;
-assign pop_sel_lo = counter << 3;
-
 always @ ( * )
 begin
   // cases:
@@ -49,12 +47,17 @@ begin
   0:
   begin
     if ( start )
+	 begin
       next_state = 1;
-    else
+		next_population = 0;
+    end
+	 else
+	 begin
       next_state = 0;
+		next_population = population;
+	 end
 
     next_counter = 0;
-    next_population = 0;
   end
   1:
   begin
@@ -69,21 +72,14 @@ begin
   2:
   begin
     if ( counter < 938 )
-    begin
       next_state = 1;
-      next_counter = counter + 1;
-
-      // set the population at the index
-      next_population = population << 8 | prg_val;
-    end
     else
-    begin
       next_state = 3;
-      next_counter = counter + 1;
-
-      // only write half the PRG value since we are at the end
-      next_population = population << 8 | prg_val;
-    end
+		
+    next_counter = counter + 1;
+  
+	 // only write half the PRG value since we are at the end
+	 next_population = population << 8 | prg_val;
   end
   3:
   begin
