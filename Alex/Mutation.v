@@ -27,32 +27,19 @@
 module mutation(
     input clk,
 	 input start,
-	 input [1499:0] sel_population, //selection is 20%, 10 paths at 150 bits apiece
     input [31:0] prg_seed,
+	 input [1499:0] sel_population, //selection is 20%, 10 paths at 150 bits apiece
     output reg [7499:0] mutant_pop, // 50 paths at 150 bits apiece
-	 output reg done
+	 output done
     );
 
 reg [7499:0] next_mutant_pop;
+reg [1:0] state, next_state;
 
-wire [749:0] family0;
-wire [749:0] family1;
-wire [749:0] family2;
-wire [749:0] family3;
-wire [749:0] family4;
-wire [749:0] family5;
-wire [749:0] family6;
-wire [749:0] family7;
-wire [749:0] family8;
-wire [749:0] family9;
-
-initial begin
-	mutant_pop = 7500'b0;
-	
-	done = 0;
-end
+//wire [749:0] family[9:0]
 
 //instantiation
+/*
 iterator iterator0 (.clk(clk), .prg_seed(prg_seed), .parent(sel_population[1499:1350]), .family(family0));			//first parent
 iterator iterator1 (.clk(clk), .prg_seed(prg_seed), .parent(sel_population[1349:1200]), .family(family1));		//second parent
 iterator iterator2 (.clk(clk), .prg_seed(prg_seed), .parent(sel_population[1199:1150]), .family(family2));		//third parent
@@ -63,20 +50,41 @@ iterator iterator6 (.clk(clk), .prg_seed(prg_seed), .parent(sel_population[599:4
 iterator iterator7 (.clk(clk), .prg_seed(prg_seed), .parent(sel_population[449:300]), .family(family7));			//eighth parent
 iterator iterator8 (.clk(clk), .prg_seed(prg_seed), .parent(sel_population[299:150]), .family(family8));			//ninth parent
 iterator iterator9 (.clk(clk), .prg_seed(prg_seed), .parent(sel_population[149:0]), .family(family9));				//tenth parent
+*/
 
+assign done = ( state == 3 );
 
-//6000,5850,5700,5550,5400,5250,5100,4950,4800,4650,4500,4350,4200,4050,3900,3750,3600,3450,3300,3150,3000,2850,2700,2550,2400,2250,2100,1950,1800,1650,1500,1350,1200,1050,900,750,600,450,300,150)
+initial begin
+	mutant_pop = 0; next_mutant_pop = 0;
+	state = 0; next_state = 0;
+end
 
 always @ (*)
 begin
 	//assign next_mutant_pop to submodule outputs
-	next_mutant_pop = {family0, family1, family2, family3, family4, family5, family6, family7, family8, family9};
+	//next_mutant_pop = {family0, family1, family2, family3, family4, family5, family6, family7, family8, family9};
+	
+	// will just duplicate stuff for now
+	next_mutant_pop = {sel_population, sel_population, sel_population, sel_population, sel_population};
 
+	// states
+	// 0: waiting state
+	// 1: processing state
+	// 2: done state
+	case ( state )
+	0: if ( start )
+			next_state = 1;
+		else
+			next_state = 0;
+	1: next_state = 2;
+	default: next_state = 0;
+	endcase
 end
 
 
 always @ (posedge clk)
 begin
 	mutant_pop <= next_mutant_pop;
+	state <= next_state;
 end
 endmodule
