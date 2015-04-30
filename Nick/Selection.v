@@ -53,7 +53,11 @@ module Selection(
 	 always @ ( * )
 	 begin
 		case ( state )
-		0: next_state = 1;
+		0:
+			if ( start ) 
+				next_state = 1;
+			else
+				next_state = 0;
 		1: next_state = 0;
 		default: next_state = 1;
 		endcase
