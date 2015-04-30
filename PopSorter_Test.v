@@ -27,15 +27,16 @@ module PopSorter_Test;
 	// Inputs
 	reg clk;
 	reg start;
-	reg [11:0] in[49:0];
+	reg [599:0] in;
 	
 	wire done;
-	wire [5:0] sorted[49:0];
+	wire [299:0] sorted;
 
 	// Instantiate the Unit Under Test (UUT)
 	PopSorter uut (
 		.clk(clk), 
-		.start(start), 
+		.start(start),
+		.sorted(sorted),
 		.in(in)
 	);
 
@@ -44,7 +45,7 @@ module PopSorter_Test;
 		clk = 0;
 		start = 0;
 		
-		in = 128490238590238502385238502386902386902369072390679032786023485234858235523485234528490238490238690182346024903768923475890234756072348907623489076890234786;
+		in = -1356136;
 
 		// Wait 100 ns for global reset to finish
 		#100;

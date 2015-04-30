@@ -21,8 +21,8 @@
 module PopSorter(
 	 input clk,
 	 input start,
-    input [11:0] in[49:0],
-    output reg [5:0] sorted[49:0],
+    input [599:0] in,
+    output reg [299:0] sorted,
 	 output done
     );
 	 
@@ -62,7 +62,8 @@ module PopSorter(
 		
 		least_index = 0;
 		least_value = 0;
-		next_sorted = sorted;
+		for ( i = 0; i < 50; i = i + 1 )
+			next_sorted[i] = sorted[12 * i -: 5];
 		next_distances = distances;
 		
 		case ( state )
@@ -71,7 +72,8 @@ module PopSorter(
 			if ( start )
 			begin
 				next_state = 1;
-				next_distances = in;
+				for ( i = 0; i < 50; i = i + 1 )
+					next_distances[i] = in[12*i +: 0];
 			end
 			else
 				next_state = 0;
@@ -87,7 +89,7 @@ module PopSorter(
 				next_state = 2;
 				
 			least_value = 6'b111111;
-			for ( i = 0; i < 49; i = i + 1 )
+			for ( i = 0; i < 50; i = i + 1 )
 			begin
 				if ( distances[i] < least_value )
 				begin
@@ -98,7 +100,7 @@ module PopSorter(
 			
 			// save that index and
 			// set that index to a max value so it won't be picked up again
-			next_sorted[counter] = least_index;
+			next_sorted[6 * counter +: 5] = least_index;
 			next_distances[least_index] = 11'b11111111111;
 			
 			next_counter = counter + 1;
@@ -113,7 +115,16 @@ module PopSorter(
 
 	always @ ( posedge clk )
 	begin
-		sorted <= next_sorted;
+		for ( i = 0; i < 50; i = i + 1 )
+		begin
+			sorted[6 * i] <= next_sorted[i][0];
+			sorted[6 * i + 1] <= next_sorted[i][1];
+			sorted[6 * i + 2] <= next_sorted[i][2];
+			sorted[6 * i + 3] <= next_sorted[i][3];
+			sorted[6 * i + 4] <= next_sorted[i][4];
+			sorted[6 * i + 5] <= next_sorted[i][5];
+		end
+		
 		distances <= next_distances;
 		state <= next_state;
 		counter <= next_counter;
