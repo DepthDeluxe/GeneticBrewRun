@@ -66,16 +66,18 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1430410098" xil_pn:in_ck="3239319284957262629" xil_pn:name="TRANEXT_xstsynthesize_spartan3e" xil_pn:prop_ck="-5146284091026888134" xil_pn:start_ts="1430410087">
-      <status xil_pn:value="AbortedRun"/>
+    <transform xil_pn:end_ts="1430410577" xil_pn:in_ck="3239319284957262629" xil_pn:name="TRANEXT_xstsynthesize_spartan3e" xil_pn:prop_ck="-5146284091026888134" xil_pn:start_ts="1430410194">
+      <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="WarningsGenerated"/>
       <status xil_pn:value="ReadyToRun"/>
       <outfile xil_pn:name="Top.lso"/>
       <outfile xil_pn:name="Top.ngc"/>
       <outfile xil_pn:name="Top.ngr"/>
       <outfile xil_pn:name="Top.prj"/>
+      <outfile xil_pn:name="Top.stx"/>
       <outfile xil_pn:name="Top.syr"/>
       <outfile xil_pn:name="Top.xst"/>
+      <outfile xil_pn:name="Top_xst.xrpt"/>
       <outfile xil_pn:name="_xmsgs/xst.xmsgs"/>
       <outfile xil_pn:name="webtalk_pn.xml"/>
       <outfile xil_pn:name="xst"/>
