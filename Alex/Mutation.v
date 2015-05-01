@@ -1,4 +1,5 @@
 `timescale 1ns / 1ps
+
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -24,53 +25,82 @@
 
 //each gene should have a certain tendency to change based on a mutation rate
 //mutation indicies don't work if random vars refer to terminal indicies
-module mutation(
+module Mutation(
     input clk,
 	 input start,
 	 input [1499:0] sel_population, //selection is 20%, 10 paths at 150 bits apiece
     input [31:0] prg_seed,
-    output reg [7499:0] mutant_pop, // 50 paths at 150 bits apiece
+    output [7499:0] mutant_pop, // 50 paths at 150 bits apiece
 	 output done
     );
+	 
 
-wire [7499:0] next_mutant_pop;
+reg [1:0] state, next_state;
+reg [9:0] all_done;
 
-reg state;
-reg next_state;
+wire iter_start; assign iter_start = ( state == 1 );
+assign done = ( state == 2 );
 
-assign done = (state == 2);
 
 initial begin
-	mutant_pop = 7500'b0;
 	state = 0;
 end
 
-	iterator iterator[9:0] (
-		.clk(clk),
-		.prg_seed(prg_seed),
-		.parent(sel_population),
-		.family(next_mutant_pop)
-	);	
+wire [9:0] iter_done;
+Iterator iterator_modules[9:0] (
+	.clk(clk),
+	.start(iter_start),
+	.prg_seed(prg_seed),
+	.parent(sel_population),
+	.family(mutant_pop),
+	.done(iter_done)
+);	
+
+initial begin
+	state = 0; next_state = 0;
+end
 		
-always @ (*)
+reg [4:0] i;
+always @ ( * )
 begin
+
+	// states
+	// 0: hold
+	// 1: wait for iterators
+	// 2: done
 	case (state)
-		0: 
-			if ( start == 1 )
+		0:
+		begin
+			if ( start )
 				next_state = 1;
-			else next_state = 0;		//retain state
+			else
+				next_state = 0;		//retain state
+			
+			all_done = 0;
+		end
+		1:
+		begin
+			if ( all_done == 10'b1111111111 )
+				next_state = 2;
+			else
+				next_state = 1;
+			
+			// wait for all modules to finish
+			for ( i = 0; i < 10; i = i + 1 )
+				all_done[i] = all_done[i] | iter_done[i];
+		end
 		
-		1: 
-			next_state = 2;
-		
-		default: next_state = 0;
+		default:
+		begin
+			next_state = 0;
+			all_done = all_done;
+		end
 	endcase
 end
 
 
 always @ (posedge clk)
 begin
-	mutant_pop <= next_mutant_pop;
 	state <= next_state;
 end
 endmodule
