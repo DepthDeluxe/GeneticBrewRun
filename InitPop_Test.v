@@ -1,5 +1,4 @@
 `timescale 1ns/10ps
-`include "InitPop.v"
 
 module InitPopTest;
 

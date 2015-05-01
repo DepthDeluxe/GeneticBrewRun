@@ -1,5 +1,4 @@
 `timescale 1ns/10ps
-`include "PseudorandomGenerator.v"
 
 module PRGTest;
 

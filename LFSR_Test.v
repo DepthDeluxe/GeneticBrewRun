@@ -1,5 +1,3 @@
-`include "LFSR.v"
-
 module LFSRTest;
 
 reg clk;
