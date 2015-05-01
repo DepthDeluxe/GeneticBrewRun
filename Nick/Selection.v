@@ -27,9 +27,11 @@ module Selection(
     output done
     );
 	 
-	 /*
-	 wire distances[599:0];
-	 wire cdp_done;
+	 wire distances[599:0];				// holds computed distances
+	 wire cdp_done;						// done for distance computation
+	 wire [299:0] sorted_indices;		// sorted indices from sorting algo
+	 wire ps_done;							// done for 
+	 
 	 CompDistancePop cdp_module(
      .clk(clk),
      .start(start),
@@ -37,7 +39,14 @@ module Selection(
 	  .distances(distances),
 	  .done(cdp_done)
 	  );
-	 */
+	 
+	  PopSorter pop_sorter_module(
+		.clk(clk),
+		.start(ps_start),
+		.in(distances),
+		.sorted(sorted_indices),
+		.done(ps_done)
+	  );
 	 
 	 reg [1:0] state;
 	 reg [1:0] next_state;

@@ -36,7 +36,5 @@ swap swap_00 (.clk(clk), .prg_seed(prg_seed), .parent(parent), .mutant(child_1))
 swap swap_01 (.clk(clk), .prg_seed(prg_seed), .parent(parent), .mutant(child_2));
 swap swap_02 (.clk(clk), .prg_seed(prg_seed), .parent(parent), .mutant(child_3));
 swap swap_03 (.clk(clk), .prg_seed(prg_seed), .parent(parent), .mutant(child_4));
-//deletionInsertion deletionInsertion_1 (.clk(clk), .prg_seed(prg_seed), .parent(sel_population[1499:1350]), .mutant(child_3));
-//inversion inversion_1 (.clk(clk), .prg_seed(prg_seed), .parent(sel_population[1499:1350]), .mutant(child_4));
 
 endmodule

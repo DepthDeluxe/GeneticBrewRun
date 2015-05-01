@@ -31,16 +31,22 @@ module PopSorter_Test;
 	
 	wire done;
 	wire [299:0] sorted;
+	wire [5:0] least_index_out;
+	wire [5:0] least_value_out;
+	wire [1:0] state_out;
 
 	// Instantiate the Unit Under Test (UUT)
 	PopSorter uut (
 		.clk(clk), 
 		.start(start),
+		.in(in),
 		.sorted(sorted),
-		.done(done),
-		.in(in)
+		.least_index_out(least_index_out),
+		.least_value_out(least_value_out),
+		.state_out(state_out),
+		.done(done)
 	);
-
+	
 	always #5 clk = ~clk;
 
 	initial begin
@@ -48,7 +54,7 @@ module PopSorter_Test;
 		clk = 0;
 		start = 0;
 		
-		in = -135945636;
+		in = 135945636;
 
 		// Wait 100 ns for global reset to finish
 		#100;
