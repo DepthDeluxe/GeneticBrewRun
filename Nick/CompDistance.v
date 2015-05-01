@@ -26,8 +26,6 @@ module CompDistance(
 	 output done
     );
 	 
-	 assign done = ( state == 3 );
-	 
 	 // declare the RAM table
 	 wire [9:0] addr;
 	 wire [8:0] dout;
@@ -40,6 +38,8 @@ module CompDistance(
 	 // holds the state and currently active module
 	 reg [1:0] state; reg [1:0] next_state;
 	 reg [3:0] counter; reg [3:0] next_counter;
+	 
+	 assign done = ( state == 3 );
 	 
 	 // A and B are adjacent places in the in array
 	 wire [4:0] A; assign A = in[counter];

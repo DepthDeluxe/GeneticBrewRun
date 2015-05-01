@@ -1,5 +1,3 @@
-`include "PseudorandomGenerator.v"
-
 module InitPop(
   input clk,
   input start,
