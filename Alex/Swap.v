@@ -1,5 +1,4 @@
 `timescale 1ns / 1ps
-`include "PseudorandomGenerator.v"
 
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -35,14 +34,15 @@ module Swap(
 	output done
 	);
 	
-assign done = ( state == 5 );
 
 reg [149:0] next_mutant;
 reg [2:0] state, next_state;
 reg [2:0] counter, next_counter;
 
+assign done = ( state == 5 );
+
 // PRG controls
-wire [8:0] prg_val0, prg_val1;
+wire [7:0] prg_val0, prg_val1;
 wire prg_start; assign prg_start = ( state == 1 || state == 2 );
 wire prg_done;
 PseudorandomGenerator prg_module0 (
