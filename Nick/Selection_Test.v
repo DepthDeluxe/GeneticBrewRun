@@ -22,24 +22,22 @@
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-module selectionTest;
+module Selection_Test;
 
 	// Inputs
 	reg clk;
 	reg start;
 	reg [7499:0] pop;
-	reg [31:0] prg_seed;
-
+	
 	// Outputs
 	wire [1499:0] sel_pop;
 	wire done;
 
 	// Instantiate the Unit Under Test (UUT)
-	selection uut (
+	Selection uut (
 		.clk(clk), 
 		.start(start), 
-		.pop(pop), 
-		.prg_seed(prg_seed), 
+		.pop(pop),
 		.sel_pop(sel_pop), 
 		.done(done)
 	);
@@ -49,14 +47,16 @@ module selectionTest;
 	initial begin
 		// Initialize Inputs
 		clk = 0;
-		start = 1;
+		start = 0;
 		pop = 7500'b111111111111111111111111;
-		prg_seed = 0;
 
 		// Wait 100 ns for global reset to finish
 		#100;
-        
-		// Add stimulus here
+		
+		start = 1;
+		#50;
+		start = 0;
+		#100000;
 
 	end
       
