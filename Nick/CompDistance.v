@@ -22,12 +22,11 @@ module CompDistance(
 	 input clk,
 	 input start,
     input [149:0] in,
-	 output done,
-    output reg [11:0] out,
-	 output [9:0] dout_debug
+    output reg [11:0] distance,
+	 output done
     );
 	 
-	 assign dout_debug = dout;
+	 assign done = ( state == 3 );
 	 
 	 // declare the RAM table
 	 wire [9:0] addr;
@@ -41,61 +40,59 @@ module CompDistance(
 	 // holds the state and currently active module
 	 reg [1:0] state; reg [1:0] next_state;
 	 reg [3:0] counter; reg [3:0] next_counter;
-	 assign done = (state == 2);
 	 
 	 // A and B are adjacent places in the in array
 	 wire [4:0] A; assign A = in[counter];
 	 wire [4:0] B; assign B = in[counter + 1];
 	 assign addr = (A < B) ? (A << 5 | B) : (B << 5 | A);
 	 
-	 reg [11:0] next_out;
+	 reg [11:0] next_distance;
 	 
 	 initial begin
-		state = 3;
-		next_state = 3;
-		counter = 0;
-		next_counter = 0;
-		out = 0;
-		next_out = 0;
+		state = 0; next_state = 0;
+		counter = 0; next_counter = 0;
+		distance = 0; next_distance = 0;
 	 end
 	 
 	 always @ ( * )
 	 begin
-		// state 0: wait for ROM
-		// state 1: increment counter
-		// state 2: done
-		// state 3: hold
+		// default assignment: remain unchanged
+		next_counter = counter;
+		next_distance = distance;
+		
+		// state 0: hold
+		// state 1: wait for ROM
+		// state 2: do math, increment counter, check for done
+		// state 3: done
 		case ( state )
-		0: begin
-			next_state = 1;
-			next_counter = counter;
-			next_out = out;
+		0:
+			if ( start )
+			begin
+				next_state = 1;
+				next_counter = 0;
+				next_distance = 0;
 			end
-		1: begin
-			// if we aren't done, then move back to first state
-			if ( counter > 13 )
-				next_state = 2;
 			else
 				next_state = 0;
-			
-			// increment counter, add the output of the ROM module
-			next_counter = counter + 1;
-			next_out = out + dout;
-			end
-		2: begin
-			next_state = 3;
-			next_counter = 0;
-			next_out = out;
-			end
-		3: begin
-			if ( start )
-				next_state = 0;
+		
+		1:
+			next_state = 2;
+		
+		2:
+		begin
+			// will only need to do 15 calculations since we are looking
+			// between the nodes
+			if ( counter < 14 )
+				next_state = 1;
 			else
 				next_state = 3;
 			
-			next_counter = 0;
-			next_out = 0;
-			end
+			// increment counter, add the output of the ROM module
+			next_counter = counter + 1;
+			next_distance = distance + dout;
+		end
+		
+		3: next_state = 0;
 		endcase
 	 end
 	 
@@ -103,7 +100,7 @@ module CompDistance(
 	 begin
 		state <= next_state;
 		counter <= next_counter;
-		out <= next_out;
+		distance <= next_distance;
 	 end
 	 
 endmodule

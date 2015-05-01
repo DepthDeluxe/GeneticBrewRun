@@ -29,12 +29,19 @@ module CompDistancePop_Test;
 	reg start;
 	reg [7499:0] pop;
 
+	wire [599:0] distances;
+	wire done;
+
 	// Instantiate the Unit Under Test (UUT)
 	CompDistancePop uut (
 		.clk(clk), 
 		.start(start), 
-		.pop(pop)
+		.pop(pop),
+		.distances(distances),
+		.done(done)
 	);
+	
+	always #5 clk = ~clk;
 
 	initial begin
 		// Initialize Inputs
@@ -44,6 +51,8 @@ module CompDistancePop_Test;
 
 		// Wait 100 ns for global reset to finish
 		#100;
+		pop = 7500'b0010101010100101010101101010101010101000101010101001010101011010101010101010001010101010010101010110101010101010100010101010100101010101101010101010101000101010101001010101011010101010101010;
+		#10;
 		
 		start = 1;
 		#10000;

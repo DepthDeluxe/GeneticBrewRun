@@ -30,18 +30,16 @@ module CompDistance_Test;
 	reg [149:0] in;
 
 	// Outputs
-	wire [11:0] out;
+	wire [11:0] distance;
 	wire done;
-	wire [9:0] dout_debug;
 
 	// Instantiate the Unit Under Test (UUT)
 	CompDistance uut (
 		.clk(clk),
 		.start(start),
 		.in(in),
-		.out(out),
-		.done(done),
-		.dout_debug(dout_debug)
+		.distance(distance),
+		.done(done)
 	);
 
 	always #5 clk = ~clk;
