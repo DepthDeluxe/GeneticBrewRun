@@ -1,7 +1,13 @@
 `timescale 1ns / 1ps
 
 `include "InitPop.v"
+`include "Alex/Iterator.v"
+`include "LFSR.v"
+`include "Alex/Mutation.v"
+`include "PseudorandomGenerator.v"
 `include "State.v"
+`include "Alex/Swap.v"
+
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -27,9 +33,6 @@ module Top(
     output light,
 	 output uart_out
     );
-
-reg [31:0] counter;
-reg [31:0] next_counter;
 
 // start lines
 wire sel_start;
@@ -62,7 +65,7 @@ Pulser button_pulser_module(
 InitPop init_pop_module(
   .clk(clk),
   .start(init_pop_start),
-  .prg_seed(counter),
+  .prg_seed(-230667),
   .population(init_population),
   .done(init_pop_done)
 );
@@ -77,11 +80,11 @@ Selection selection_module (
 );
 
 // Mutation module, runs after selection module
-mutation mutation_module(
+Mutation mutation_module(
     .clk(clk),
 	 .start(mut_start),
 	 .sel_population(sel_population), //selection is 20%, 10 paths at 150 bits apiece
-    .prg_seed(counter),
+    .prg_seed(-3829076),
     .mutant_pop(mut_population), // 50 paths at 150 bits apiece
 	 .done(mut_done)
 );
@@ -114,20 +117,5 @@ UARTModule uart_module(
 	 .LED_magic(uart_data)
 );
 */
-
-
-initial begin
-	counter = 0;
-end
-
-always @ ( * )
-begin
-	next_counter = counter + 1;
-end
-
-always @ ( posedge clk )
-begin
-	counter <= next_counter;
-end
 
 endmodule
