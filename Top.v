@@ -107,15 +107,11 @@ State state_module(
   .state_out(state_out)
 );
 
-/*
-wire [0:7] uart_data_to_send;
-wire [7:0] uart_data; assign uart_data = 0;
-UARTModule uart_module(
-	 .clk(clk),
-	 .data_to_send(uart_data_to_send),
-    .transmit(transmit),
-	 .LED_magic(uart_data)
+UARTSpitter(
+	.clk(clk),
+	.sel_population(sel_population),
+	.start(uart_transmit),
+	.out(uart_out),
 );
-*/
 
 endmodule
