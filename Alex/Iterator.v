@@ -56,6 +56,9 @@ end
 integer i;
 always @ ( * )
 begin
+	// default case is to hold
+	all_done = all_done;
+
 	// states
 	// 0: hold / wait to start
 	// 1: wait for all swap modules to stop
