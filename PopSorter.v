@@ -29,7 +29,7 @@ module PopSorter(
 	 output done
     );
 	 
-	 reg [11:0] distances[49:0]; reg [11:0] next_distances[49:0];
+	 reg [599:0] distances, next_distances;
 	 
 	 reg [1:0] state, next_state; assign state_out = state;
 	 reg [5:0] counter, next_counter;
@@ -37,25 +37,14 @@ module PopSorter(
 	 reg [5:0] least_index; assign least_index_out = least_index;
 	 reg [5:0] least_value; assign least_value_out = least_value;
 	 
-	 reg [5:0] next_sorted[49:0];
+	 reg [299:0] next_sorted;
 	 
 	 assign done = ( state == 2 );
 	 
 	 integer i, j;
 	 initial begin
-		sorted = 0;
-		
-		// init the values for sorted and distances
-		for ( i = 0; i < 50; i = i + 1 )
-		begin
-			for ( j = 0; j < 6; j = j + 1 )
-				sorted[6 * i + j] = 0;
-			next_sorted[i] = 0;
-			
-			for ( j = 0; j < 12; j = j + 1 )
-				distances[i][j] = 0;
-			next_distances[i] = 0;
-		end
+		sorted = 0; next_sorted = 0;
+		distances = 0; next_distances = 0;
 		
 		state = 0; next_state = 0;
 		counter = 0; next_counter = 0;
@@ -66,13 +55,9 @@ module PopSorter(
 	 begin
 		least_index = 0;
 		least_value = 0;
-		for ( i = 0; i < 50; i = i + 1 )
-		begin
-			for ( j = 0; j < 6; j = j + 1 )
-				next_sorted[i][j] = sorted[6 * i + j];
-				
-			next_distances[i] = distances[i];
-		end
+		
+		next_sorted = sorted;
+		next_distances = distances;
 		
 	   // state 0: waiting to start state
 		// state 1: processing state
@@ -84,10 +69,8 @@ module PopSorter(
 			begin
 				next_state = 1;
 				
-				// sample from input when we are starting
-				for ( i = 0; i < 50; i = i + 1 )
-					for ( j = 0; j < 12; j = j + 1 )
-						next_distances[i][j] = in[12 * i + j];
+				// sample from input when we are starting						
+				next_distances = in;
 			end
 			else
 				next_state = 0;
@@ -130,14 +113,9 @@ module PopSorter(
 	end
 
 	always @ ( posedge clk )
-	begin
-		for ( i = 0; i < 50; i = i + 1 )
-		begin
-			for ( j = 0; j < 6; j = j + 1 )
-				sorted[6 * i + j] <= next_sorted[i][j];
-			
-			distances[i] <= next_distances[i];
-		end
+	begin		
+		sorted <= next_sorted;
+		distances <= next_distances;
 		
 		state <= next_state;
 		counter <= next_counter;
