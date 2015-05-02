@@ -21,15 +21,14 @@
 module CompDistancePop(
     input clk,
     input start,
-    input [7499:0] pop,
+    input [1874:0] pop,
 	 
-	 output [599:0] distances,
+	 output [299:0] distances,
     output reg done
     );
 	
-	wire [49:0] all_done;
-	
-	CompDistance cd_modules[49:0] (
+	wire [24:0] all_done;
+	CompDistance cd_modules[24:0] (
 	 .clk(clk),
 	 .start(start),
     .in(pop),
@@ -42,7 +41,7 @@ module CompDistancePop(
 	always @ ( * )
 	begin
 		done = 1;
-		for ( i = 0; i < 50; i = i + 1 )
+		for ( i = 0; i < 24; i = i + 1 )
 			done = done & all_done[i];
 	end
 endmodule

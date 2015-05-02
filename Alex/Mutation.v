@@ -28,9 +28,9 @@
 module Mutation(
     input clk,
 	 input start,
-	 input [1499:0] sel_population, //selection is 20%, 10 paths at 150 bits apiece
+	 input [374:0] sel_population, //selection is 20%, 10 paths at 150 bits apiece
     input [31:0] prg_seed,
-    output [7499:0] mutant_pop, // 50 paths at 150 bits apiece
+    output [1874:0] mutant_pop, // 50 paths at 150 bits apiece
 	 output done
     );
 	 
@@ -46,8 +46,8 @@ initial begin
 	state = 0;
 end
 
-wire [9:0] iter_done;
-Iterator iterator_modules[9:0] (
+wire [4:0] iter_done;
+Iterator iterator_modules[4:0] (
 	.clk(clk),
 	.start(iter_start),
 	.prg_seed(prg_seed),
@@ -82,13 +82,13 @@ begin
 		end
 		1:
 		begin
-			if ( all_done == 10'b1111111111 )
+			if ( all_done == 5'b11111 )
 				next_state = 2;
 			else
 				next_state = 1;
 			
 			// wait for all modules to finish
-			for ( i = 0; i < 10; i = i + 1 )
+			for ( i = 0; i < 5; i = i + 1 )
 				all_done[i] = all_done[i] | iter_done[i];
 		end
 		

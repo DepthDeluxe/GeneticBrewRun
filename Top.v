@@ -49,10 +49,10 @@ wire sel_done;
 wire mut_done;
 
 // population lines
-wire [7499:0] init_population;			// population output from InitPop
-wire [7499:0] population;					// population at each state
-wire [1499:0] sel_population;
-wire [7499:0] mut_population;				// population to be mutated
+wire [1874:0] init_population;			// population output from InitPop
+wire [1874:0] population;					// population at each state
+wire [374:0] sel_population;
+wire [1874:0] mut_population;				// population to be mutated
 
 wire button_p;
 Pulser button_pulser_module(

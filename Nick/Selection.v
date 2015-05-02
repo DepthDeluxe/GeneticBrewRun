@@ -18,20 +18,22 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
+
+// cut selected in half
 module Selection(
     input clk,
     input start,
-    input [7499:0] pop,
+    input [1874:0] pop,
 	 
-    output reg [1499:0] sel_pop,
+    output reg [374:0] sel_pop,
     output done
     );
 	 
 	 reg [1:0] state, next_state;
 	 
-	 wire [599:0] distances;				// holds computed distances
+	 wire [299:0] distances;				// holds computed distances
 	 wire cdp_start, cdp_done;			// done for distance computation
-	 wire [299:0] sorted_indices;		// sorted indices from sorting algo
+	 wire [149:0] sorted_indices;		// sorted indices from sorting algo
 	 wire ps_start, ps_done;			// done for
 	 
 	 assign cdp_start = ( state == 1 );
@@ -65,9 +67,9 @@ module Selection(
 	 always @ ( * )
 	 begin
 		// map the selected population out as mapped by the sorted indices
-		for ( i = 0; i < 10; i = i + 1 )
-			for ( j = 0; j < 150; j = j + 1 )
-				sel_pop[150 * i + j] = pop[150 * sorted_indices[i] + j];
+		for ( i = 0; i < 5; i = i + 1 )
+			for ( j = 0; j < 75; j = j + 1 )
+				sel_pop[75 * i + j] = pop[75 * sorted_indices[i] + j];
 	 
 		// states
 		// 0: waiting to start

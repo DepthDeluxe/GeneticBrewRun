@@ -21,7 +21,7 @@
 module CompDistance(
 	 input clk,
 	 input start,
-    input [149:0] in,
+    input [74:0] in,
     output reg [11:0] distance,
 	 output done
     );
@@ -80,9 +80,9 @@ module CompDistance(
 		
 		2:
 		begin
-			// will only need to do 15 calculations since we are looking
+			// will only need to do 6 calculations since we are looking
 			// between the nodes
-			if ( counter < 14 )
+			if ( counter < 6 )
 				next_state = 1;
 			else
 				next_state = 3;

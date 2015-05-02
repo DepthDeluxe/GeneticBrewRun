@@ -2,11 +2,11 @@ module InitPop(
   input clk,
   input start,
   input [31:0] prg_seed,
-  output reg [7499:0] population,
+  output reg [1874:0] population,
   output done
 );
 
-reg [7499:0] next_population;
+reg [1874:0] next_population;
 
 reg [1:0] state;
 reg [1:0] next_state;
@@ -69,7 +69,7 @@ begin
   end
   2:
   begin
-    if ( counter < 938 )
+    if ( counter < 235 )
       next_state = 1;
     else
       next_state = 3;

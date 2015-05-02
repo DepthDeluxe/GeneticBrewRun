@@ -22,13 +22,13 @@ module Iterator(
     input clk,
 	 input start,
 	 input [31:0] prg_seed,
-    input [149:0] parent,
-    output [749:0] family,
+    input [74:0] parent,
+    output [374:0] family,
 	 output done
     );
 
 // the first member of the family is always going to be the parent
-assign family[149:0] = parent;
+assign family[74:0] = parent;
 	
 // state management
 reg [1:0] state, next_state;
@@ -43,7 +43,7 @@ Swap swap_modules[3:0] (
 	.start(swap_start),
 	.prg_seed(prg_seed),
 	.parent(parent),
-	.mutant(family[749:150]),
+	.mutant(family[374:75]),
 	.done(swap_done)
 );
 

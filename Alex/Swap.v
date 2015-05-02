@@ -23,19 +23,14 @@ module Swap(
 	input clk,
 	input start,
 	input [31:0] prg_seed,
-	input [149:0] parent,
+	input [74:0] parent,
 	
-	output [4:0] debug_aug0,
-	output [4:0] debug_aug1,
-	output [149:0] debug_change,
-	output [2:0] debug_state,
-	
-	output reg [149:0] mutant,
+	output reg [74:0] mutant,
 	output done
 	);
 	
 
-reg [149:0] next_mutant;
+reg [74:0] next_mutant;
 reg [2:0] state, next_state;
 reg [2:0] counter, next_counter;
 
