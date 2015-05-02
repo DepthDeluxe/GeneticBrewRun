@@ -53,7 +53,7 @@ begin
 	all_done = 0;
 end
 
-reg [2:0] i;
+integer i;
 always @ ( * )
 begin
 	// states

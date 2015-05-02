@@ -41,7 +41,7 @@ module PopSorter(
 	 
 	 assign done = ( state == 2 );
 	 
-	 reg [14:0] i; reg [14:0] j;
+	 integer i, j;
 	 initial begin
 		sorted = 0;
 		

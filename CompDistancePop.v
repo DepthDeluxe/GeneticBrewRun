@@ -38,7 +38,7 @@ module CompDistancePop(
     );
 	 
 	// we are done only when every single module is done
-	reg [7:0] i;
+	integer i;
 	always @ ( * )
 	begin
 		done = 1;

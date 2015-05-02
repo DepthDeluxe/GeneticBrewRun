@@ -70,7 +70,7 @@ initial begin
 	state = 0; next_state = 0;
 end
 
-reg [4:0] i;
+integer i;
 always @ (*)
 begin
 	// default behavior: keep mutant the same

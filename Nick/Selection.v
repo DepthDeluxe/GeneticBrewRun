@@ -61,8 +61,7 @@ module Selection(
 		next_state = 0;
 	 end
 	 
-	 reg [3:0] i;
-	 reg [7:0] j;
+	 integer i, j;
 	 always @ ( * )
 	 begin
 		// map the selected population out as mapped by the sorted indices
